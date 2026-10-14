@@ -1,0 +1,124 @@
+source /Users/ambtripa/Desktop/Ambika/BIT-MTech/Sem2/MLOps/Assignment/.venv/bin/activate
+ambtripa@AMBTRIPA-M-Q22N Assignment % source /Users/ambtripa/Desktop/Ambika/BIT-MTech/Sem2/MLOps/Assignment/.venv/bin/activate
+(.venv) ambtripa@AMBTRIPA-M-Q22N Assignment % minikube start --driver=docker
+😄  minikube v1.38.1 on Darwin 26.4.1 (arm64)
+✨  Using the docker driver based on existing profile
+👍  Starting "minikube" primary control-plane node in "minikube" cluster
+🚜  Pulling base image v0.0.50 ...
+🔄  Restarting existing docker container for "minikube" ...
+🐳  Preparing Kubernetes v1.35.1 on Docker 29.2.1 ...
+🔎  Verifying Kubernetes components...
+    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
+🌟  Enabled addons: storage-provisioner, default-storageclass
+🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
+(.venv) ambtripa@AMBTRIPA-M-Q22N Assignment % minikube image load heart-disease-api:latest
+(.venv) ambtripa@AMBTRIPA-M-Q22N Assignment % kubectl apply -f k8s/deployment.yaml
+kubectl apply -f k8s/service.yaml
+deployment.apps/heart-disease-api created
+service/heart-disease-api-service created
+(.venv) ambtripa@AMBTRIPA-M-Q22N Assignment % kubectl rollout status deployment/heart-disease-api --timeout=90s
+deployment "heart-disease-api" successfully rolled out
+(.venv) ambtripa@AMBTRIPA-M-Q22N Assignment % kubectl get pods,svc,deployment
+NAME                                     READY   STATUS    RESTARTS   AGE
+pod/heart-disease-api-7b5bc5b856-jbgtl   1/1     Running   0          23s
+pod/heart-disease-api-7b5bc5b856-rfzq6   1/1     Running   0          23s
+
+NAME                                TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+service/heart-disease-api-service   LoadBalancer   10.97.67.188   <pending>     80:31736/TCP   23s
+service/kubernetes                  ClusterIP      10.96.0.1      <none>        443/TCP        11h
+
+NAME                                READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/heart-disease-api   2/2     2            2           23s
+(.venv) ambtripa@AMBTRIPA-M-Q22N Assignment % minikube service heart-disease-api-service --url
+http://127.0.0.1:63979
+❗  Because you are using a Docker driver on darwin, the terminal needs to be open to run it.
+
+
+
+
+
+---------------------------------------------------------------------------------------------------------------
+source /Users/ambtripa/Desktop/Ambika/BIT-MTech/Sem2/MLOps/Assignment/.venv/bin/activate
+ambtripa@AMBTRIPA-M-Q22N Assignment % source /Users/ambtripa/Desktop/Ambika/BIT-MTech/Sem2/MLOps/Assignment/.venv/bin/activate
+(.venv) ambtripa@AMBTRIPA-M-Q22N Assignment % curl http://127.0.0.1:63979/health 
+{"status":"healthy","pipeline_loaded":true,"timestamp":"2026-05-06T05:16:49.516011"}%                                                                                                 
+(.venv) ambtripa@AMBTRIPA-M-Q22N Assignment % curl -X POST http://127.0.0.1:63979/predict \
+  -H "Content-Type: application/json" \
+  -d '{"age":55,"sex":1,"cp":2,"trestbps":130,"chol":250,"fbs":0,"restecg":1,"thalach":150,"exang":0,"oldpeak":1.5,"slope":1,"ca":0,"thal":3}'
+{"prediction":0,"prediction_label":"No Heart Disease","confidence":0.1651,"risk_level":"Low Risk","timestamp":"2026-05-06T05:17:06.969765"}%                                          
+(.venv) ambtripa@AMBTRIPA-M-Q22N Assignment % curl http://127.0.0.1:63979/metrics 
+# HELP python_gc_objects_collected_total Objects collected during gc
+# TYPE python_gc_objects_collected_total counter
+python_gc_objects_collected_total{generation="0"} 833.0
+python_gc_objects_collected_total{generation="1"} 527.0
+python_gc_objects_collected_total{generation="2"} 20.0
+# HELP python_gc_objects_uncollectable_total Uncollectable objects found during GC
+# TYPE python_gc_objects_uncollectable_total counter
+python_gc_objects_uncollectable_total{generation="0"} 0.0
+python_gc_objects_uncollectable_total{generation="1"} 0.0
+python_gc_objects_uncollectable_total{generation="2"} 0.0
+# HELP python_gc_collections_total Number of times this generation was collected
+# TYPE python_gc_collections_total counter
+python_gc_collections_total{generation="0"} 385.0
+python_gc_collections_total{generation="1"} 35.0
+python_gc_collections_total{generation="2"} 3.0
+# HELP python_info Python platform information
+# TYPE python_info gauge
+python_info{implementation="CPython",major="3",minor="11",patchlevel="15",version="3.11.15"} 1.0
+# HELP process_virtual_memory_bytes Virtual memory size in bytes.
+# TYPE process_virtual_memory_bytes gauge
+process_virtual_memory_bytes 1.48307968e+09
+# HELP process_resident_memory_bytes Resident memory size in bytes.
+# TYPE process_resident_memory_bytes gauge
+process_resident_memory_bytes 2.12037632e+08
+# HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
+# TYPE process_start_time_seconds gauge
+process_start_time_seconds 1.77804449832e+09
+# HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
+# TYPE process_cpu_seconds_total counter
+process_cpu_seconds_total 1.5
+# HELP process_open_fds Number of open file descriptors.
+# TYPE process_open_fds gauge
+process_open_fds 11.0
+# HELP process_max_fds Maximum number of open file descriptors.
+# TYPE process_max_fds gauge
+process_max_fds 1.048576e+06
+# HELP predictions_total Total number of predictions
+# TYPE predictions_total counter
+predictions_total{result="No Heart Disease"} 1.0
+# HELP predictions_created Total number of predictions
+# TYPE predictions_created gauge
+predictions_created{result="No Heart Disease"} 1.778044626968604e+09
+# HELP prediction_latency_seconds Time spent processing prediction
+# TYPE prediction_latency_seconds histogram
+prediction_latency_seconds_bucket{le="0.005"} 0.0
+prediction_latency_seconds_bucket{le="0.01"} 0.0
+prediction_latency_seconds_bucket{le="0.025"} 1.0
+prediction_latency_seconds_bucket{le="0.05"} 1.0
+prediction_latency_seconds_bucket{le="0.075"} 1.0
+prediction_latency_seconds_bucket{le="0.1"} 1.0
+prediction_latency_seconds_bucket{le="0.25"} 1.0
+prediction_latency_seconds_bucket{le="0.5"} 1.0
+prediction_latency_seconds_bucket{le="0.75"} 1.0
+prediction_latency_seconds_bucket{le="1.0"} 1.0
+prediction_latency_seconds_bucket{le="2.5"} 1.0
+prediction_latency_seconds_bucket{le="5.0"} 1.0
+prediction_latency_seconds_bucket{le="7.5"} 1.0
+prediction_latency_seconds_bucket{le="10.0"} 1.0
+prediction_latency_seconds_bucket{le="+Inf"} 1.0
+prediction_latency_seconds_count 1.0
+prediction_latency_seconds_sum 0.016593217849731445
+# HELP prediction_latency_seconds_created Time spent processing prediction
+# TYPE prediction_latency_seconds_created gauge
+prediction_latency_seconds_created 1.7780444992545805e+09
+# HELP http_requests_total Total HTTP requests
+# TYPE http_requests_total counter
+http_requests_total{endpoint="/health",method="GET",status="200"} 18.0
+http_requests_total{endpoint="/",method="GET",status="200"} 1.0
+http_requests_total{endpoint="/predict",method="POST",status="200"} 1.0
+# HELP http_requests_created Total HTTP requests
+# TYPE http_requests_created gauge
+http_requests_created{endpoint="/health",method="GET",status="200"} 1.7780445099141872e+09
+http_requests_created{endpoint="/",method="GET",status="200"} 1.7780445540867238e+09
+http_requests_created{endpoint="/predict",method="POST",status="200"} 1.7780446269686162e+09
+(.venv) ambtripa@AMBTRIPA-M-Q22N Assignment % 

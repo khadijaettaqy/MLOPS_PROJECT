@@ -1,0 +1,13 @@
+source /Users/ambtripa/Desktop/Ambika/BIT-MTech/Sem2/MLOps/Assignment/.venv/bin/activate
+ambtripa@AMBTRIPA-M-Q22N Assignment % source /Users/ambtripa/Desktop/Ambika/BIT-MTech/Sem2/MLOps/Assignment/.venv/bin/activate
+(.venv) ambtripa@AMBTRIPA-M-Q22N Assignment % python src/models/inference.py
+==================================================
+HEART DISEASE PREDICTION - INFERENCE TEST
+==================================================
+
+Input: {'age': 55, 'sex': 1, 'cp': 2, 'trestbps': 130, 'chol': 250, 'fbs': 0, 'restecg': 1, 'thalach': 150, 'exang': 0, 'oldpeak': 1.5, 'slope': 1, 'ca': 0, 'thal': 3}
+
+Prediction: No Heart Disease
+Confidence: 0.1651
+Risk Level: Low Risk
+(.venv) ambtripa@AMBTRIPA-M-Q22N Assignment % 

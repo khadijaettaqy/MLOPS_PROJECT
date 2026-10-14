@@ -1,0 +1,80 @@
+(.venv) ambtripa@AMBTRIPA-M-Q22N Assignment % python src/models/train.py
+/Users/ambtripa/Desktop/Ambika/BIT-MTech/Sem2/MLOps/Assignment/.venv/lib/python3.14/site-packages/mlflow/tracking/_tracking_service/utils.py:184: FutureWarning: The filesystem tracking backend (e.g., './mlruns') is deprecated as of February 2026. Consider transitioning to a database backend (e.g., 'sqlite:///mlflow.db') to take advantage of the latest MLflow features. See https://mlflow.org/docs/latest/self-hosting/migrate-from-file-store for migration guidance.
+  return FileStore(store_uri, store_uri)
+============================================================
+  MODEL SELECTION & TUNING
+============================================================
+
+[Logistic Regression]
+  Tuning hyperparameters via GridSearchCV (5-fold CV) ...
+  Best params : {'C': 0.1, 'solver': 'liblinear'}
+  Best CV AUC : 0.9004
+
+  Cross-Validation Results (Logistic Regression)
+  Metric           Mean       Std
+  --------------------------------
+  accuracy       0.8264    0.0282
+  precision      0.8439    0.0329
+  recall         0.7648    0.0797
+  roc_auc        0.9004    0.0157
+2026/05/06 10:29:37 WARNING mlflow.models.model: `artifact_path` is deprecated. Please use `name` instead.
+2026/05/06 10:29:37 WARNING mlflow.sklearn: Saving scikit-learn models in the pickle or cloudpickle format requires exercising caution because these formats rely on Python's object serialization mechanism, which can execute arbitrary code during deserialization. The recommended safe alternative is the 'skops' format. For more information, see: https://scikit-learn.org/stable/model_persistence.html
+
+[Random Forest]
+  Tuning hyperparameters via GridSearchCV (5-fold CV) ...
+  Best params : {'max_depth': None, 'min_samples_split': 2, 'n_estimators': 200}
+  Best CV AUC : 0.8837
+
+  Cross-Validation Results (Random Forest)
+  Metric           Mean       Std
+  --------------------------------
+  accuracy       0.8139    0.0143
+  precision      0.8295    0.0436
+  recall         0.7557    0.0756
+  roc_auc        0.8837    0.0310
+2026/05/06 10:29:43 WARNING mlflow.models.model: `artifact_path` is deprecated. Please use `name` instead.
+2026/05/06 10:29:43 WARNING mlflow.sklearn: Saving scikit-learn models in the pickle or cloudpickle format requires exercising caution because these formats rely on Python's object serialization mechanism, which can execute arbitrary code during deserialization. The recommended safe alternative is the 'skops' format. For more information, see: https://scikit-learn.org/stable/model_persistence.html
+
+============================================================
+  FINAL TEST-SET EVALUATION
+============================================================
+
+  Hold-out Test Metrics (Logistic Regression)
+  ROC-AUC : 0.9578
+              precision    recall  f1-score   support
+
+  No Disease       0.93      0.82      0.87        33
+     Disease       0.81      0.93      0.87        28
+
+    accuracy                           0.87        61
+   macro avg       0.87      0.87      0.87        61
+weighted avg       0.88      0.87      0.87        61
+
+
+  Hold-out Test Metrics (Random Forest)
+  ROC-AUC : 0.9551
+              precision    recall  f1-score   support
+
+  No Disease       0.97      0.85      0.90        33
+     Disease       0.84      0.96      0.90        28
+
+    accuracy                           0.90        61
+   macro avg       0.90      0.91      0.90        61
+weighted avg       0.91      0.90      0.90        61
+
+
+============================================================
+  MODEL SELECTION DECISION
+============================================================
+  Logistic Regression     CV ROC-AUC = 0.9004 ± 0.0157  <-- SELECTED
+  Random Forest           CV ROC-AUC = 0.8837 ± 0.0310
+
+  Winner : Logistic Regression  (highest mean CV ROC-AUC = 0.9004)
+  Rationale: model chosen purely on generalisation performance measured by stratified 5-fold cross-validation ROC-AUC.
+
+  Model saved → /Users/ambtripa/Desktop/Ambika/BIT-MTech/Sem2/MLOps/Assignment/src/models/heart_model.pkl
+2026/05/06 10:29:46 WARNING mlflow.models.model: `artifact_path` is deprecated. Please use `name` instead.
+2026/05/06 10:29:46 WARNING mlflow.sklearn: Saving scikit-learn models in the pickle or cloudpickle format requires exercising caution because these formats rely on Python's object serialization mechanism, which can execute arbitrary code during deserialization. The recommended safe alternative is the 'skops' format. For more information, see: https://scikit-learn.org/stable/model_persistence.html
+  MLflow tracking URI → /Users/ambtripa/Desktop/Ambika/BIT-MTech/Sem2/MLOps/Assignment/mlruns
+============================================================
+(.venv) ambtripa@AMBTRIPA-M-Q22N Assignment % 

@@ -1,0 +1,56 @@
+source /Users/ambtripa/Desktop/Ambika/BIT-MTech/Sem2/MLOps/Assignment/.venv/bin/activate
+ambtripa@AMBTRIPA-M-Q22N Assignment % source /Users/ambtripa/Desktop/Ambika/BIT-MTech/Sem2/MLOps/Assignment/.venv/bin/activate
+(.venv) ambtripa@AMBTRIPA-M-Q22N Assignment % docker build -t heart-disease-api .
+[+] Building 264.1s (11/11) FINISHED                                                                                                                             docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                                                                                                             0.0s
+ => => transferring dockerfile: 496B                                                                                                                                             0.0s
+ => [internal] load metadata for docker.io/library/python:3.11-slim                                                                                                              2.4s
+ => [internal] load .dockerignore                                                                                                                                                0.0s
+ => => transferring context: 129B                                                                                                                                                0.0s
+ => [1/6] FROM docker.io/library/python:3.11-slim@sha256:6d85378d88a19cd4d76079817532d62232be95757cb45945a99fec8e8084b9c2                                                        0.0s
+ => [internal] load build context                                                                                                                                                0.0s
+ => => transferring context: 29.58kB                                                                                                                                             0.0s
+ => CACHED [2/6] WORKDIR /app                                                                                                                                                    0.0s
+ => [3/6] COPY requirements.txt .                                                                                                                                                0.0s
+ => [4/6] RUN pip install --no-cache-dir --upgrade pip &&     pip install --no-cache-dir -r requirements.txt                                                                   258.9s
+ => [5/6] COPY src/ src/                                                                                                                                                         0.0s 
+ => [6/6] COPY data/ data/                                                                                                                                                       0.0s 
+ => exporting to image                                                                                                                                                           2.6s 
+ => => exporting layers                                                                                                                                                          2.6s 
+ => => writing image sha256:25d3b1c6a6a29fbf0c9e81761996a958f76613f928198aae3ba3f6dad6e432db                                                                                     0.0s 
+ => => naming to docker.io/library/heart-disease-api                                                                                                                             0.0s 
+(.venv) ambtripa@AMBTRIPA-M-Q22N Assignment % docker run -p 8000:8000 heart-disease-api
+
+What's next:
+    Debug this container error with Gordon → docker ai "help me fix this container error"
+docker: Error response from daemon: failed to set up container networking: driver failed programming external connectivity on endpoint zen_cori (46def43a163b1152fd37727653dfc97651a5162037cdfa65e536831a89283b86): Bind for 0.0.0.0:8000 failed: port is already allocated
+
+Run 'docker run --help' for more information
+(.venv) ambtripa@AMBTRIPA-M-Q22N Assignment % docker ps
+CONTAINER ID   IMAGE          COMMAND                  CREATED        STATUS        PORTS                                         NAMES
+4967562eeaba   c4ec9e2d680f   "uvicorn src.api.mod…"   11 hours ago   Up 11 hours   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp   heart-api
+(.venv) ambtripa@AMBTRIPA-M-Q22N Assignment % docker stop $(docker ps -q)
+4967562eeaba
+(.venv) ambtripa@AMBTRIPA-M-Q22N Assignment % docker ps                                
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+(.venv) ambtripa@AMBTRIPA-M-Q22N Assignment % docker run -p 8000:8000 heart-disease-api
+2026-05-06 05:10:23,160 - src.api.model_app - INFO - Pipeline loaded successfully.
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     192.168.65.1:40656 - "GET /health HTTP/1.1" 200 OK
+INFO:     192.168.65.1:60649 - "GET /docs HTTP/1.1" 200 OK
+INFO:     192.168.65.1:60649 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     192.168.65.1:64549 - "GET /health HTTP/1.1" 200 OK
+INFO:     192.168.65.1:23076 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     192.168.65.1:21439 - "GET /metrics HTTP/1.1" 200 OK
+2026-05-06 05:12:02,470 - src.api.model_app - INFO - Prediction: No Heart Disease | Confidence: 0.1651 | Risk: Low Risk | Latency: 0.0177s | Input: {'age': 55.0, 'sex': 1, 'cp': 2, 'trestbps': 130.0, 'chol': 250.0, 'fbs': 0, 'restecg': 1, 'thalach': 150.0, 'exang': 0, 'oldpeak': 1.5, 'slope': 1, 'ca': 0, 'thal': 3}
+INFO:     192.168.65.1:22061 - "POST /predict HTTP/1.1" 200 OK
+2026-05-06 05:12:04,957 - src.api.model_app - INFO - Prediction: No Heart Disease | Confidence: 0.1651 | Risk: Low Risk | Latency: 0.0040s | Input: {'age': 55.0, 'sex': 1, 'cp': 2, 'trestbps': 130.0, 'chol': 250.0, 'fbs': 0, 'restecg': 1, 'thalach': 150.0, 'exang': 0, 'oldpeak': 1.5, 'slope': 1, 'ca': 0, 'thal': 3}
+INFO:     192.168.65.1:22061 - "POST /predict HTTP/1.1" 200 OK
+INFO:     192.168.65.1:39894 - "GET /metrics HTTP/1.1" 200 OK
+2026-05-06 05:12:37,561 - src.api.model_app - INFO - Prediction: No Heart Disease | Confidence: 0.1651 | Risk: Low Risk | Latency: 0.0092s | Input: {'age': 55.0, 'sex': 1, 'cp': 2, 'trestbps': 130.0, 'chol': 250.0, 'fbs': 0, 'restecg': 1, 'thalach': 150.0, 'exang': 0, 'oldpeak': 1.5, 'slope': 1, 'ca': 0, 'thal': 3}
+INFO:     192.168.65.1:31440 - "POST /predict HTTP/1.1" 200 OK
+time="2026-05-06T11:59:41+05:30" level=error msg="error waiting for container: unexpected EOF"
+(.venv) ambtripa@AMBTRIPA-M-Q22N Assignment %
